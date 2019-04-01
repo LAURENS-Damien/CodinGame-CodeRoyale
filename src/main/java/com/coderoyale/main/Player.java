@@ -47,9 +47,9 @@ class Player {
                 int health = in.nextInt();
                 ActiveUnity activeUnity = new ActiveUnity(x, y, owner, unitType, health);
                 if (activeUnity.isAlliedQueen()) {
-                    System.err.println("Position actuelle de la reine " + unitType + " : x :" + x + " et y : " + y);
                     queen.setxCoordinate(x);
                     queen.setyCoordinate(y);
+                    queen.goToNearestSite(sites);
                 }
             }
 
@@ -59,7 +59,7 @@ class Player {
             // First line: A valid queen action
             // Second line: A set of training instructions
             //System.out.println("WAIT");
-            System.out.println("MOVE " + (queen.getxCoordinate()+30) + " " + (queen.getyCoordinate()+30));
+            System.out.println("MOVE " + (queen.getxCoordinate()+100) + " " + (queen.getyCoordinate()+100));
             System.out.println("TRAIN");
         }
     }
