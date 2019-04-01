@@ -12,8 +12,6 @@ rm $file_generated
 main_directory=`find $dossier_racine/java -type d -name "main"`
 cd $main_directory
 cat `ls | head -1` > $file_generated
-# On supprime les lignes commençant par 'import'
-sed -i -e '/^import/d' $file_generated
 
 # On injecte toutes les classes dans le fichier genere
 classes_directory=`find $dossier_racine/java -type d -name "classes"`
@@ -25,6 +23,9 @@ done
 
 # On supprime les lignes commençant par 'package'
 sed -i -e '/^package/d' $file_generated
+
+# On supprime les lignes commençant par 'import'
+sed -i -e '/^import/d' $file_generated
 
 # On declare les stats en 'static'
 sed -i -e 's/public class/class/g' $file_generated

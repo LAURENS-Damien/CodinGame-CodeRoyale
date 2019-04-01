@@ -49,7 +49,7 @@ class Player {
                 if (activeUnity.isAlliedQueen()) {
                     queen.setxCoordinate(x);
                     queen.setyCoordinate(y);
-                    queen.goToNearestSite(sites);
+                    queen.setNearestSite(sites);
                 }
             }
 
@@ -58,9 +58,16 @@ class Player {
 
             // First line: A valid queen action
             // Second line: A set of training instructions
-            //System.out.println("WAIT");
-            System.out.println("MOVE " + (queen.getxCoordinate()+100) + " " + (queen.getyCoordinate()+100));
-            System.out.println("TRAIN");
+
+            // On bouge tant que l'on a pas atteint un site
+            if (queen.getTouchedId() < 0) {
+                System.out.println("MOVE " + sites.get(queen.getNearestSite()).getxCoordinate() + " " + sites.get(queen.getNearestSite()).getyCoordinate());
+            } else {
+                // On construit une caserne
+                System.out.println("BUILD " + queen.getNearestSite() + " BARRACKS-KNIGHT");
+            }
+
+            System.out.println("TRAIN " + queen.getNearestSite());
         }
     }
 }

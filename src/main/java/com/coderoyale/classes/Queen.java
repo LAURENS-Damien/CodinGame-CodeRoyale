@@ -10,6 +10,7 @@ public class Queen {
     private int pv = 100;
     private int xCoordinate;
     private int yCoordinate;
+    private int nearestSite;
 
     public int getRADIUS() {
         return RADIUS;
@@ -55,18 +56,41 @@ public class Queen {
         this.yCoordinate = yCoordinate;
     }
 
-    public void goToNearestSite(List<Site> sites) {
+    public int getNearestSite() {
+        return nearestSite;
+    }
 
-        int nearestSite = 0;
+    public void setNearestSite(List<Site> sites) {
+
+        int nearestSiteDeltaX = 0;
+        int nearestSiteDeltaY = 0;
         int deltaX = 0;
         int deltaY = 0;
 
         for (Site site : sites) {
-            //Math.max(site.getxCoordonate(), site.getyCoordonate());
-            deltaX = site.getxCoordonate()- this.getxCoordinate();
-            deltaY = site.getyCoordonate() - this.getyCoordinate();
-            if (Math.max(deltaX, (site.getxCoordonate() - this.getxCoordinate())) >= deltaX) {
+            //Math.max(site.getxCoordinate(), site.getyCoordinate());
+//            deltaX = site.getxCoordinate()- this.getxCoordinate();
+//            deltaY = site.getyCoordinate() - this.getyCoordinate();
+//            deltaX = Math.max(deltaX, (site.getxCoordinate() - this.getxCoordinate()));
+//            deltaY = Math.max(deltaY, (site.getyCoordinate() - this.getyCoordinate()));
 
+
+            // On détermine la coordonnée X la plus proche
+            if (site.getxCoordinate() <= this.getxCoordinate()) {
+                deltaX = this.getxCoordinate() - site.getxCoordinate();
+            } else {
+                deltaX =  site.getxCoordinate() - this.getxCoordinate();
+            }
+
+            // On détermine la coordonnée Y la plus proche
+            if (site.getyCoordinate() <= this.getyCoordinate()) {
+                deltaY = this.getyCoordinate() - site.getyCoordinate();
+            } else {
+                deltaY =  site.getyCoordinate() - this.getyCoordinate();
+            }
+
+            if (deltaX > nearestSiteDeltaX) {
+                this.nearestSite = site.getSiteId();
             }
         }
     }

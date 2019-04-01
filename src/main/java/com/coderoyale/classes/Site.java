@@ -7,9 +7,9 @@ public class Site {
     private int yCoordinate;
     private int radius;
 
-    public Site(int siteId, int xCoordonate, int yCoordonate, int radius) {
+    public Site(int siteId, int xCoordinate, int yCoordonate, int radius) {
         this.siteId = siteId;
-        this.xCoordinate = xCoordonate;
+        this.xCoordinate = xCoordinate;
         this.yCoordinate = yCoordonate;
         this.radius = radius;
     }
@@ -22,20 +22,20 @@ public class Site {
         this.siteId = siteId;
     }
 
-    public int getxCoordonate() {
+    public int getxCoordinate() {
         return xCoordinate;
     }
 
-    public void setxCoordonate(int xCoordonate) {
-        this.xCoordinate = xCoordonate;
+    public void setxCoordinate(int xCoordinate) {
+        this.xCoordinate = xCoordinate;
     }
 
-    public int getyCoordonate() {
+    public int getyCoordinate() {
         return yCoordinate;
     }
 
-    public void setyCoordonate(int yCoordonate) {
-        this.yCoordinate = yCoordonate;
+    public void setyCoordinate(int yCoordinate) {
+        this.yCoordinate = yCoordinate;
     }
 
     public int getRadius() {
