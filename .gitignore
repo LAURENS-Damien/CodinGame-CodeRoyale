@@ -1,3 +1,7 @@
 .idea
 *iml
 out*
+*META-INF*
+*lib*
+*file_generated.txt
+*web*
