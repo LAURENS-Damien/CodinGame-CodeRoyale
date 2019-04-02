@@ -6,6 +6,7 @@ public class Site {
     private int xCoordinate;
     private int yCoordinate;
     private int radius;
+    private Building building = new Building(StructureType.NoBuildingConstructed.toInt(), Owner.NoBuildingConstructed.toInt());
 
     public Site(int siteId, int xCoordinate, int yCoordonate, int radius) {
         this.siteId = siteId;
@@ -44,5 +45,13 @@ public class Site {
 
     public void setRadius(int radius) {
         this.radius = radius;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 }
