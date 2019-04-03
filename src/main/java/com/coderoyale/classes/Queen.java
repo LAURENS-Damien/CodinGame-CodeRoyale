@@ -1,5 +1,7 @@
 package com.coderoyale.classes;
 
+import org.junit.platform.commons.util.StringUtils;
+
 import java.util.List;
 
 public class Queen {
@@ -57,24 +59,46 @@ public class Queen {
     }
 
     public int getNearestEmptySite() {
-        return nearestEmptySite;
+        return this.nearestEmptySite;
     }
 
     public void setNearestEmptySite(List<Site> sites) {
 
-        int deltaX;
+        int deltaXMax = GameCard.XCoordinate.toInt();
 
         for (Site site : sites) {
-            // On détermine la coordonnée X la plus proche
-            if (site.getxCoordinate() <= this.getxCoordinate()) {
-                deltaX = this.getxCoordinate() - site.getxCoordinate();
-            } else {
-                deltaX =  site.getxCoordinate() - this.getxCoordinate();
-            }
+            if (site.isFree()) {
+                int deltaX;
+                // On détermine la coordonnée X la plus proche
+                if (site.getxCoordinate() <= this.getxCoordinate()) {
+                    deltaX = this.getxCoordinate() - site.getxCoordinate();
+                } else {
+                    deltaX =  site.getxCoordinate() - this.getxCoordinate();
+                }
 
-            if (deltaX < sites.get(this.nearestEmptySite).getxCoordinate()) {
-                this.nearestEmptySite = site.getSiteId();
+                if (deltaX < deltaXMax) {
+                    this.nearestEmptySite = site.getSiteId();
+                    deltaXMax = deltaX;
+                }
             }
         }
+    }
+
+    public String moveToNearestEmptySite(List<Site> sites) {
+        String moveCommand = Commands.MOVE.toString() + " " + sites.get(this.nearestEmptySite).getxCoordinate() + " " + sites.get(this.nearestEmptySite).getyCoordinate();
+        System.out.println(moveCommand);
+
+        return moveCommand;
+    }
+
+    public boolean isInContactWithSite() {
+        return this.touchedId < 0;
+    }
+
+    public String launchBarrackConstruction() {
+        String moveCommand = Commands.BUILD.toString() + " " + this.getNearestEmptySite() + " " + BarrackType.ARCHER;
+        System.out.println(moveCommand);
+
+        return  moveCommand;
     }
 }

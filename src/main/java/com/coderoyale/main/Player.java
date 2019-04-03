@@ -60,11 +60,13 @@ class Player {
             // Second line: A set of training instructions
 
             // On bouge tant que l'on a pas atteint un site
-            if (queen.getTouchedId() < 0) {
-                System.out.println("MOVE " + sites.get(queen.getNearestEmptySite()).getxCoordinate() + " " + sites.get(queen.getNearestEmptySite()).getyCoordinate());
+            if (queen.isInContactWithSite()) {
+                //System.out.println("MOVE " + sites.get(queen.getNearestEmptySite()).getxCoordinate() + " " + sites.get(queen.getNearestEmptySite()).getyCoordinate());
+                queen.moveToNearestEmptySite(sites);
             } else {
                 // On construit une caserne
-                System.out.println("BUILD " + queen.getNearestEmptySite() + " BARRACKS-KNIGHT");
+                //System.out.println("BUILD " + queen.getNearestEmptySite() + " BARRACKS-KNIGHT");
+                queen.launchBarrackConstruction();
             }
 
             System.out.println("TRAIN " + queen.getNearestEmptySite());

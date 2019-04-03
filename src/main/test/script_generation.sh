@@ -27,5 +27,6 @@ sed -i -e '/^package/d' $file_generated
 # On supprime les lignes commençant par 'import'
 sed -i -e '/^import/d' $file_generated
 
-# On declare les stats en 'static'
+# On supprimer la portee devant les classes et les enums
 sed -i -e 's/public class/class/g' $file_generated
+sed -i -e 's/public enum/enum/g' $file_generated

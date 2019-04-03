@@ -54,4 +54,8 @@ public class Site {
     public void setBuilding(Building building) {
         this.building = building;
     }
+
+    public boolean isFree() {
+        return this.building.getStructureType()==StructureType.NoBuildingConstructed.toInt();
+    }
 }
