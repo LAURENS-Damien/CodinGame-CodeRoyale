@@ -27,6 +27,7 @@ sed -i -e '/^package/d' $file_generated
 # On supprime les lignes commençant par 'import'
 sed -i -e '/^import/d' $file_generated
 
-# On supprimer la portee devant les classes et les enums
+# On supprimer la portee devant les classes, les enums, les abstract
 sed -i -e 's/public class/class/g' $file_generated
 sed -i -e 's/public enum/enum/g' $file_generated
+sed -i -e 's/public abstract/abstract/g' $file_generated

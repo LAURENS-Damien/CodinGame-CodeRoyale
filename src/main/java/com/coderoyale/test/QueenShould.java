@@ -50,6 +50,7 @@ public class QueenShould {
     }
 
     @Test void launchBarrackConstruction() {
-        assertEquals(queen.launchBarrackConstruction(), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.ARCHER);
+        assertEquals(queen.launchBarrackConstruction(BarrackType.ARCHER), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.ARCHER);
+        assertEquals(queen.launchBarrackConstruction(BarrackType.KNIGHT), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.KNIGHT);
     }
 }

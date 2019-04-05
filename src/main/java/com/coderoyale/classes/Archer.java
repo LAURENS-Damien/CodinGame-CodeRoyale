@@ -1,5 +1,5 @@
 package com.coderoyale.classes;
 
 public class Archer {
-    final private int COST = 100;
+    final static public int COST = 100;
 }

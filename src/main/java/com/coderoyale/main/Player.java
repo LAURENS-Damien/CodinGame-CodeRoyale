@@ -1,6 +1,8 @@
 package com.coderoyale.main;
 
 import com.coderoyale.classes.ActiveUnity;
+import com.coderoyale.classes.AlliedDashboard;
+import com.coderoyale.classes.BarrackType;
 import com.coderoyale.classes.Queen;
 import com.coderoyale.classes.Site;
 
@@ -22,6 +24,8 @@ class Player {
             Site site = new Site(siteId, x, y, radius);
             sites.add(site);
         }
+
+        AlliedDashboard alliedDashboard = new AlliedDashboard();
         Queen queen = new Queen();
         // game loop
         while (true) {
@@ -66,7 +70,12 @@ class Player {
             } else {
                 // On construit une caserne
                 //System.out.println("BUILD " + queen.getNearestEmptySite() + " BARRACKS-KNIGHT");
-                queen.launchBarrackConstruction();
+                if (alliedDashboard.getArcherNumber() < 1 && queen.canBuild(BarrackType.ARCHER)) {
+                    queen.launchBarrackConstruction(BarrackType.ARCHER);
+                    alliedDashboard.setArcherNumber(alliedDashboard.getArcherNumber()+1);
+                } else {
+                    queen.launchBarrackConstruction(BarrackType.KNIGHT);
+                }
             }
 
             System.out.println("TRAIN " + queen.getNearestEmptySite());

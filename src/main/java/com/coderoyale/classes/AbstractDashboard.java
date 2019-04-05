@@ -1,41 +1,22 @@
 package com.coderoyale.classes;
 
-public class AbstractDashboard {
+public abstract class AbstractDashboard {
+    private int knightnumber = 0;
+    private int archerNumber = 0;
 
-    private int unitType;
-    private int health;
-    private int xCoordinate;
-    private int yCoordinate;
-
-    public int getUnitType() {
-        return unitType;
+    public int getKnightnumber() {
+        return knightnumber;
     }
 
-    public void setUnitType(int unitType) {
-        this.unitType = unitType;
+    public void setKnightnumber(int knightnumber) {
+        this.knightnumber = knightnumber;
     }
 
-    public int getHealth() {
-        return health;
+    public int getArcherNumber() {
+        return archerNumber;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public int getxCoordinate() {
-        return xCoordinate;
-    }
-
-    public void setxCoordinate(int xCoordinate) {
-        this.xCoordinate = xCoordinate;
-    }
-
-    public int getyCoordinate() {
-        return yCoordinate;
-    }
-
-    public void setyCoordinate(int yCoordinate) {
-        this.yCoordinate = yCoordinate;
+    public void setArcherNumber(int archerNumber) {
+        this.archerNumber = archerNumber;
     }
 }

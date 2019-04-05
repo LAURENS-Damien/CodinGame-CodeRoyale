@@ -1,7 +1,5 @@
 package com.coderoyale.classes;
 
-import org.junit.platform.commons.util.StringUtils;
-
 import java.util.List;
 
 public class Queen {
@@ -95,10 +93,20 @@ public class Queen {
         return this.touchedId < 0;
     }
 
-    public String launchBarrackConstruction() {
-        String moveCommand = Commands.BUILD.toString() + " " + this.getNearestEmptySite() + " " + BarrackType.ARCHER;
+    public String launchBarrackConstruction(BarrackType barrackType) {
+        String moveCommand = Commands.BUILD.toString() + " " + this.getNearestEmptySite() + " " + barrackType.toString();
         System.out.println(moveCommand);
 
         return  moveCommand;
+    }
+
+    public boolean canBuild(BarrackType barrackType) {
+        if (barrackType.name().equals(BarrackType.KNIGHT)) {
+            return this.gold >= Knight.COST;
+        } else if (barrackType.name().equals(BarrackType.ARCHER)) {
+            return this.gold >= Archer.COST;
+        } else {
+            return false;
+        }
     }
 }
