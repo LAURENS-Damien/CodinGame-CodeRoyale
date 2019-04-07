@@ -1,6 +1,7 @@
 package com.coderoyale.classes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Queen {
     final private int RADIUS = 30;
@@ -90,10 +91,10 @@ public class Queen {
     }
 
     public boolean isInContactWithSite() {
-        return this.touchedId < 0;
+        return this.touchedId > -1;
     }
 
-    public String launchBarrackConstruction(BarrackType barrackType) {
+    public String buildBarrack(BarrackType barrackType) {
         String moveCommand = Commands.BUILD.toString() + " " + this.getNearestEmptySite() + " " + barrackType.toString();
         System.out.println(moveCommand);
 
@@ -101,12 +102,35 @@ public class Queen {
     }
 
     public boolean canBuild(BarrackType barrackType) {
-        if (barrackType.name().equals(BarrackType.KNIGHT)) {
+        if (barrackType.name().equals(BarrackType.KNIGHT.name())) {
             return this.gold >= Knight.COST;
-        } else if (barrackType.name().equals(BarrackType.ARCHER)) {
+        } else if (barrackType.name().equals(BarrackType.ARCHER.name())) {
             return this.gold >= Archer.COST;
         } else {
             return false;
         }
+    }
+
+    public String waitAMoment() {
+        String waitCommand = Commands.WAIT.toString();
+        System.out.println(waitCommand);
+
+        return waitCommand;
+    }
+
+    public String trainArmy(List<Site> sites) {
+//        StringBuilder sitesId = new StringBuilder();
+//        for (int index=0; index < sites.size(); index++) {
+//            Site site = sites.get(index);
+//            System.err.println("Le site numéro " + site.getSiteId() +  "possède une structure de type" + site.getBuilding().getStructureType());
+//            if (site.getBuilding().getStructureType() != StructureType.NoBuildingConstructed.toInt()) {
+//                sitesId.append(" ").append(site.getSiteId());
+//            }
+//        }
+//        String trainCommand = Commands.TRAIN.toString() + sitesId;
+        String trainCommand = Commands.TRAIN.toString() + " " + this.getNearestEmptySite();
+        System.out.println(trainCommand);
+
+        return trainCommand;
     }
 }

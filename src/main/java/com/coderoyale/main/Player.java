@@ -1,10 +1,6 @@
 package com.coderoyale.main;
 
-import com.coderoyale.classes.ActiveUnity;
-import com.coderoyale.classes.AlliedDashboard;
-import com.coderoyale.classes.BarrackType;
-import com.coderoyale.classes.Queen;
-import com.coderoyale.classes.Site;
+import com.coderoyale.classes.*;
 
 import java.util.*;
 
@@ -15,7 +11,10 @@ class Player {
         int numSites = in.nextInt();
 
         // Initilisation
+        int lapCounter = 0;
         List<Site> sites = new ArrayList<>();
+        List<Archer> archers = new ArrayList<>();
+        List<Knight> knights = new ArrayList<>();
         for (int i = 0; i < numSites; i++) {
             int siteId = in.nextInt();
             int x = in.nextInt();
@@ -25,7 +24,6 @@ class Player {
             sites.add(site);
         }
 
-        AlliedDashboard alliedDashboard = new AlliedDashboard();
         Queen queen = new Queen();
         // game loop
         while (true) {
@@ -55,30 +53,51 @@ class Player {
                     queen.setyCoordinate(y);
                     queen.setNearestEmptySite(sites);
                 }
-            }
 
-            // Write an action using System.out.println()
-            // To debug: System.err.println("Debug messages...");
+                if (activeUnity.isAlliedKnight()) {
+                    System.err.println("Santé des chevaliers : " + activeUnity.getHealth());
+                }
 
-            // First line: A valid queen action
-            // Second line: A set of training instructions
-
-            // On bouge tant que l'on a pas atteint un site
-            if (queen.isInContactWithSite()) {
-                //System.out.println("MOVE " + sites.get(queen.getNearestEmptySite()).getxCoordinate() + " " + sites.get(queen.getNearestEmptySite()).getyCoordinate());
-                queen.moveToNearestEmptySite(sites);
-            } else {
-                // On construit une caserne
-                //System.out.println("BUILD " + queen.getNearestEmptySite() + " BARRACKS-KNIGHT");
-                if (alliedDashboard.getArcherNumber() < 1 && queen.canBuild(BarrackType.ARCHER)) {
-                    queen.launchBarrackConstruction(BarrackType.ARCHER);
-                    alliedDashboard.setArcherNumber(alliedDashboard.getArcherNumber()+1);
-                } else {
-                    queen.launchBarrackConstruction(BarrackType.KNIGHT);
+                if (activeUnity.isAlliedArcher()) {
+                    if (activeUnity.getHealth() == 1) {
+                        for (Archer archer : archers) {
+                            if (archer.getPV() == 1) {
+                                archers.remove(archer);
+                            }
+                        }
+                    }
                 }
             }
 
-            System.out.println("TRAIN " + queen.getNearestEmptySite());
+            // Si on est arrivé sur un site à construire
+            if (queen.isInContactWithSite() && sites.get(queen.getTouchedId()).isFree()) {
+                System.err.println("On est arrivé sur un\nsite à construire : " + queen.getTouchedId());
+                // On construit une caserne
+                // D'arché en priorité
+                if (archers.size() <=2 && queen.canBuild(BarrackType.ARCHER)) {
+                    System.err.println("On construit un arché");
+                    queen.buildBarrack(BarrackType.ARCHER);
+                    archers.add(new Archer());
+                    // Sinon de chevaliers
+                } else if (!archers.isEmpty() && queen.canBuild(BarrackType.KNIGHT)) {
+                    System.err.println("On construit un chevalier");
+                    queen.buildBarrack(BarrackType.KNIGHT);
+                    // Sinon on attend
+                } else {
+                    System.err.println("On attend");
+                    queen.waitAMoment();
+                }
+            // sinon on bouge tant que l'on a pas atteint un site
+            } else {
+                System.err.println("On bouge vers le site\nnuméro : " + queen.getNearestEmptySite());
+                queen.moveToNearestEmptySite(sites);
+            }
+
+            // On entraine des unités
+            queen.trainArmy(sites);
+
+            lapCounter++;
+            System.err.println("-------- Fin du tour numéro : " + lapCounter + "--------");
         }
     }
 }

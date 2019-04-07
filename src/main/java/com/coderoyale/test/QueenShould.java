@@ -1,9 +1,7 @@
 package com.coderoyale.test;
 
-import com.coderoyale.classes.BarrackType;
-import com.coderoyale.classes.Commands;
-import com.coderoyale.classes.Queen;
-import com.coderoyale.classes.Site;
+import com.coderoyale.classes.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -49,8 +47,25 @@ public class QueenShould {
         assertEquals(queen.moveToNearestEmptySite(sites), Commands.MOVE.toString() + " " + sites.get(queen.getNearestEmptySite()).getxCoordinate() + " " + sites.get(queen.getNearestEmptySite()).getyCoordinate());
     }
 
-    @Test void launchBarrackConstruction() {
-        assertEquals(queen.launchBarrackConstruction(BarrackType.ARCHER), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.ARCHER);
-        assertEquals(queen.launchBarrackConstruction(BarrackType.KNIGHT), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.KNIGHT);
+    @Test
+    public void launchBarrackConstruction() {
+        assertEquals(queen.buildBarrack(BarrackType.ARCHER), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.ARCHER);
+        queen.setGold(Archer.COST);
+        assertEquals(queen.canBuild(BarrackType.ARCHER), true);
+        queen.setGold(Archer.COST-1);
+        assertEquals(queen.canBuild(BarrackType.ARCHER), false);
+        assertEquals(queen.buildBarrack(BarrackType.KNIGHT), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.KNIGHT);
+    }
+
+    @Test
+    public void waitAMoment() {
+        assertEquals(queen.waitAMoment(), Commands.WAIT.toString());
+    }
+
+    @Test
+    public void trainArmy() {
+        sites.get(0).setBuilding(new Building(StructureType.Barrack.toInt(), Owner.AlliedBuilding.toInt()));
+        sites.get(1).setBuilding(new Building(StructureType.Barrack.toInt(), Owner.AlliedBuilding.toInt()));
+        assertEquals(queen.trainArmy(sites), Commands.TRAIN.toString() + " 1 2");
     }
 }

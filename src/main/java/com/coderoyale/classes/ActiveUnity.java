@@ -56,6 +56,14 @@ public class ActiveUnity {
     }
 
     public boolean isAlliedQueen() {
-        return unitType==-1 && owner==0;
+        return unitType==-1 && owner==Owner.AlliedBuilding.toInt();
+    }
+
+    public boolean isAlliedKnight() {
+        return unitType==0 && owner==Owner.AlliedBuilding.toInt();
+    }
+
+    public boolean isAlliedArcher() {
+        return unitType==1 && owner==Owner.AlliedBuilding.toInt();
     }
 }
