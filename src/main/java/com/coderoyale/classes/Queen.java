@@ -101,16 +101,6 @@ public class Queen {
         return  moveCommand;
     }
 
-    public boolean canBuild(BarrackType barrackType) {
-        if (barrackType.name().equals(BarrackType.KNIGHT.name())) {
-            return this.gold >= Knight.COST;
-        } else if (barrackType.name().equals(BarrackType.ARCHER.name())) {
-            return this.gold >= Archer.COST;
-        } else {
-            return false;
-        }
-    }
-
     public String waitAMoment() {
         String waitCommand = Commands.WAIT.toString();
         System.out.println(waitCommand);
@@ -123,8 +113,9 @@ public class Queen {
         for (int index=0; index < sites.size(); index++) {
             Site site = sites.get(index);
             System.err.println("Le site numéro " + site.getSiteId() +  " possède une structure de type " + site.getBuilding().getStructureType());
-            if (site.getBuilding().getStructureType() != StructureType.NoBuildingConstructed.toInt()) {
+            if (site.getBuilding().getStructureType() != StructureType.NoBuildingConstructed.toInt() && canTrain(site)) {
                 sitesId.append(" ").append(site.getSiteId());
+                this.setGold(this.getGold()-site.getBuilding().getCost());
             }
         }
         String trainCommand = Commands.TRAIN.toString() + sitesId;
@@ -132,5 +123,16 @@ public class Queen {
         System.out.println(trainCommand);
 
         return trainCommand;
+    }
+
+
+    private boolean canTrain(Site site) {
+        if (site.getBuilding().getBarrackType().name().equals(BarrackType.KNIGHT.name())) {
+            return this.gold >= Knight.COST;
+        } else if (site.getBuilding().getBarrackType().name().equals(BarrackType.ARCHER.name())) {
+            return this.gold >= Archer.COST;
+        } else {
+            return false;
+        }
     }
 }

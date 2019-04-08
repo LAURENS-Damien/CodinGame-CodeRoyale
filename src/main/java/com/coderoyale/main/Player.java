@@ -31,6 +31,7 @@ class Player {
             int touchedSite = in.nextInt(); // -1 if none
             queen.setGold(gold);
             queen.setTouchedId(touchedSite);
+            queen.setNearestEmptySite(sites);
             for (int i = 0; i < numSites; i++) {
                 int siteId = in.nextInt();
                 int ignore1 = in.nextInt(); // used in future leagues
@@ -73,17 +74,17 @@ class Player {
                 System.err.println("On est arrivé sur un\nsite à construire : " + queen.getTouchedId());
                 // On construit une caserne
                 // D'arché en priorité
-                if (archers.size() <=2 && queen.canBuild(BarrackType.ARCHER)) {
+                if (archers.size() <=2) {
                     System.err.println("On construit un arché");
                     queen.buildBarrack(BarrackType.ARCHER);
                     archers.add(new Archer());
-                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), Owner.AlliedBuilding.toInt()));
-                    // Sinon de chevaliers
-                } else if (!archers.isEmpty() && queen.canBuild(BarrackType.KNIGHT)) {
+                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.ARCHER, Owner.AlliedBuilding.toInt()));
+                // Sinon de chevaliers
+                } else if (!archers.isEmpty()) {
                     System.err.println("On construit un chevalier");
                     queen.buildBarrack(BarrackType.KNIGHT);
-                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), Owner.AlliedBuilding.toInt()));
-                    // Sinon on attend
+                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.KNIGHT, Owner.AlliedBuilding.toInt()));
+                // Sinon on attend
                 } else {
                     System.err.println("On attend");
                     queen.waitAMoment();
