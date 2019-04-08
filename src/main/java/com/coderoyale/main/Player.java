@@ -51,7 +51,6 @@ class Player {
                 if (activeUnity.isAlliedQueen()) {
                     queen.setxCoordinate(x);
                     queen.setyCoordinate(y);
-                    queen.setNearestEmptySite(sites);
                 }
 
                 if (activeUnity.isAlliedKnight()) {
@@ -78,10 +77,12 @@ class Player {
                     System.err.println("On construit un arché");
                     queen.buildBarrack(BarrackType.ARCHER);
                     archers.add(new Archer());
+                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), Owner.AlliedBuilding.toInt()));
                     // Sinon de chevaliers
                 } else if (!archers.isEmpty() && queen.canBuild(BarrackType.KNIGHT)) {
                     System.err.println("On construit un chevalier");
                     queen.buildBarrack(BarrackType.KNIGHT);
+                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), Owner.AlliedBuilding.toInt()));
                     // Sinon on attend
                 } else {
                     System.err.println("On attend");
@@ -90,6 +91,7 @@ class Player {
             // sinon on bouge tant que l'on a pas atteint un site
             } else {
                 System.err.println("On bouge vers le site\nnuméro : " + queen.getNearestEmptySite());
+                queen.setNearestEmptySite(sites);
                 queen.moveToNearestEmptySite(sites);
             }
 

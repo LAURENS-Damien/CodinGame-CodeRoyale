@@ -5,6 +5,7 @@ import com.coderoyale.classes.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class QueenShould {
     private static List<Site> sites = new ArrayList<>();
     private static Queen queen = new Queen();
 
-    @BeforeAll
-    public static void initAll() {
+    @BeforeEach
+    public void initAll() {
         // Liste des sites
         sites = new ArrayList<>();
         sites.add(new Site(1, 50, 100, 50));
@@ -30,6 +31,7 @@ public class QueenShould {
 
     @Test
     public void setNearestEmptySite() {
+        queen.setxCoordinate(0);
         queen.setNearestEmptySite(sites);
         assertEquals(sites.get(1).getSiteId(), queen.getNearestEmptySite());
         queen.setxCoordinate(45);
@@ -45,6 +47,8 @@ public class QueenShould {
         queen.setxCoordinate(0);
         queen.setNearestEmptySite(sites);
         assertEquals(queen.moveToNearestEmptySite(sites), Commands.MOVE.toString() + " " + sites.get(queen.getNearestEmptySite()).getxCoordinate() + " " + sites.get(queen.getNearestEmptySite()).getyCoordinate());
+        queen.setNearestEmptySite(sites);
+        //assertEquals(queen.getxCoordinate(), sites.get(1).getxCoordinate());
     }
 
     @Test

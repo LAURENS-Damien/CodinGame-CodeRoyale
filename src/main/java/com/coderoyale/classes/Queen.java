@@ -119,16 +119,16 @@ public class Queen {
     }
 
     public String trainArmy(List<Site> sites) {
-//        StringBuilder sitesId = new StringBuilder();
-//        for (int index=0; index < sites.size(); index++) {
-//            Site site = sites.get(index);
-//            System.err.println("Le site numéro " + site.getSiteId() +  "possède une structure de type" + site.getBuilding().getStructureType());
-//            if (site.getBuilding().getStructureType() != StructureType.NoBuildingConstructed.toInt()) {
-//                sitesId.append(" ").append(site.getSiteId());
-//            }
-//        }
-//        String trainCommand = Commands.TRAIN.toString() + sitesId;
-        String trainCommand = Commands.TRAIN.toString() + " " + this.getNearestEmptySite();
+        StringBuilder sitesId = new StringBuilder();
+        for (int index=0; index < sites.size(); index++) {
+            Site site = sites.get(index);
+            System.err.println("Le site numéro " + site.getSiteId() +  " possède une structure de type " + site.getBuilding().getStructureType());
+            if (site.getBuilding().getStructureType() != StructureType.NoBuildingConstructed.toInt()) {
+                sitesId.append(" ").append(site.getSiteId());
+            }
+        }
+        String trainCommand = Commands.TRAIN.toString() + sitesId;
+        //String trainCommand = Commands.TRAIN.toString() + " " + this.getNearestEmptySite();
         System.out.println(trainCommand);
 
         return trainCommand;
