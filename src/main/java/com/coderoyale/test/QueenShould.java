@@ -23,6 +23,7 @@ public class QueenShould {
         sites.add(new Site(2, 10, 10, 50));
         sites.add(new Site(3, 584, 478, 50));
         sites.add(new Site(4, 1900, 896, 50));
+        sites.add(new Site(7, 1751, 713, 79));
 
         // Coordonnées d'origine de la reine
         queen.setxCoordinate(0);
@@ -36,9 +37,12 @@ public class QueenShould {
         queen.setxCoordinate(45);
         queen.setNearestEmptySite(sites);
         assertEquals(sites.get(0).getSiteId(), queen.getNearestEmptySite());
-        queen.setxCoordinate(1800);
+        queen.setxCoordinate(1880);
         queen.setNearestEmptySite(sites);
         assertEquals(sites.get(3).getSiteId(), queen.getNearestEmptySite());
+        queen.setxCoordinate(1714);
+        queen.setNearestEmptySite(sites);
+        assertEquals(sites.get(4).getSiteId(), queen.getNearestEmptySite());
     }
 
     @Test
@@ -52,17 +56,22 @@ public class QueenShould {
 
     @Test
     public void launchBarrackConstruction() {
-//        assertEquals(queen.buildBarrack(BarrackType.ARCHER), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.ARCHER);
-//        queen.setGold(Archer.COST);
-//        assertEquals(queen.canTrain(BarrackType.ARCHER), true);
-//        queen.setGold(Archer.COST-1);
-//        assertEquals(queen.canTrain(BarrackType.ARCHER), false);
-//        assertEquals(queen.buildBarrack(BarrackType.KNIGHT), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.KNIGHT);
+        assertEquals(queen.buildBarrack(BarrackType.ARCHER, sites), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.ARCHER);
+        assertEquals(queen.buildBarrack(BarrackType.KNIGHT, sites), Commands.BUILD.toString() + " " + queen.getNearestEmptySite() + " " + BarrackType.KNIGHT);
     }
 
     @Test
     public void waitAMoment() {
         assertEquals(queen.waitAMoment(), Commands.WAIT.toString());
+    }
+
+    @Test
+    void canTrainArmy() {
+        queen.buildBarrack(BarrackType.ARCHER, sites);
+        queen.setGold(Archer.COST);
+        assertEquals(queen.canTrain(sites.get(queen.getNearestEmptySite())), true);
+        queen.setGold(Archer.COST-1);
+        assertEquals(queen.canTrain(sites.get(queen.getNearestEmptySite())), false);
     }
 
     @Test

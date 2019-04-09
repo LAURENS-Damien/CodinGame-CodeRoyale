@@ -76,13 +76,13 @@ class Player {
                 // D'arché en priorité
                 if (archers.size() <=2) {
                     System.err.println("On construit un arché");
-                    queen.buildBarrack(BarrackType.ARCHER);
+                    queen.buildBarrack(BarrackType.ARCHER, sites);
                     archers.add(new Archer());
                     sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.ARCHER, Owner.AlliedBuilding.toInt()));
                 // Sinon de chevaliers
                 } else if (!archers.isEmpty()) {
                     System.err.println("On construit un chevalier");
-                    queen.buildBarrack(BarrackType.KNIGHT);
+                    queen.buildBarrack(BarrackType.KNIGHT, sites);
                     sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.KNIGHT, Owner.AlliedBuilding.toInt()));
                 // Sinon on attend
                 } else {

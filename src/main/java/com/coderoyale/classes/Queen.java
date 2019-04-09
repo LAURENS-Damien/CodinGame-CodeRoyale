@@ -81,6 +81,8 @@ public class Queen {
                 }
             }
         }
+
+        System.err.println("Appel à la méthode setNearestEmptySite. Voici l'id du site \nle plus proche : " + this.nearestEmptySite);
     }
 
     public String moveToNearestEmptySite(List<Site> sites) {
@@ -94,11 +96,12 @@ public class Queen {
         return this.touchedId > -1;
     }
 
-    public String buildBarrack(BarrackType barrackType) {
-        String moveCommand = Commands.BUILD.toString() + " " + this.getNearestEmptySite() + " " + barrackType.toString();
-        System.out.println(moveCommand);
+    public String buildBarrack(BarrackType barrackType, List<Site> sites) {
+        String buildCommand = Commands.BUILD.toString() + " " + this.getNearestEmptySite() + " " + barrackType.toString();
+        sites.get(this.getNearestEmptySite()).setBuilding(new Building(StructureType.Barrack.toInt(), barrackType, Owner.AlliedBuilding.toInt()));
+        System.out.println(buildCommand);
 
-        return  moveCommand;
+        return  buildCommand;
     }
 
     public String waitAMoment() {
@@ -112,8 +115,9 @@ public class Queen {
         StringBuilder sitesId = new StringBuilder();
         for (int index=0; index < sites.size(); index++) {
             Site site = sites.get(index);
-            System.err.println("Le site numéro " + site.getSiteId() +  " possède une structure de type " + site.getBuilding().getStructureType());
+            System.err.println("Le site numéro " + site.getSiteId() +  " possède une structure \nde type " + site.getBuilding().getStructureType());
             if (site.getBuilding().getStructureType() != StructureType.NoBuildingConstructed.toInt() && canTrain(site)) {
+                System.err.println("Le site numéro " + site.getSiteId() +  " peut entrainer : " + canTrain(site));
                 sitesId.append(" ").append(site.getSiteId());
                 this.setGold(this.getGold()-site.getBuilding().getCost());
             }
@@ -126,7 +130,7 @@ public class Queen {
     }
 
 
-    private boolean canTrain(Site site) {
+    public boolean canTrain(Site site) {
         if (site.getBuilding().getBarrackType().name().equals(BarrackType.KNIGHT.name())) {
             return this.gold >= Knight.COST;
         } else if (site.getBuilding().getBarrackType().name().equals(BarrackType.ARCHER.name())) {
