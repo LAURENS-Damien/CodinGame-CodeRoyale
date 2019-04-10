@@ -55,34 +55,43 @@ class Player {
                 }
 
                 if (activeUnity.isAlliedKnight()) {
-                    System.err.println("Santé des chevaliers : " + activeUnity.getHealth());
+                    //System.err.println("Santé des chevaliers : " + activeUnity.getHealth());
                 }
 
                 if (activeUnity.isAlliedArcher()) {
+//                    for (Archer archer : archers) {
+//                        System.err.println("Nombre d'archés : " + archers.size());
+//                        if (activeUnity.getHealth() == 1) {
+//                            archers.remove(archer);
+//                            System.err.println("On supprime les archés");
+//                        } else {
+//                            System.err.println("Santé des archés : " + activeUnity.getHealth());
+//                        }
+//                    }
                     if (activeUnity.getHealth() == 1) {
-                        for (Archer archer : archers) {
-                            if (archer.getPV() == 1) {
-                                archers.remove(archer);
-                            }
-                        }
+                        archers.clear();
                     }
                 }
             }
 
             // Si on est arrivé sur un site à construire
             if (queen.isInContactWithSite() && sites.get(queen.getTouchedId()).isFree()) {
-                System.err.println("On est arrivé sur un\nsite à construire : " + queen.getTouchedId());
+//                System.err.println("On est arrivé sur un\nsite à construire : " + queen.getTouchedId());
+//                System.err.println("Nombre de chevaliers : " + knights.size());
+//                System.err.println("Nombre d'archers : " + archers.size());
                 // On construit une caserne
-                // D'arché en priorité
-                if (archers.size() <=2) {
+                // D'archés en priorité
+                if (archers.size() <1) {
                     System.err.println("On construit un arché");
                     queen.buildBarrack(BarrackType.ARCHER, sites);
                     archers.add(new Archer());
+                    archers.add(new Archer());
                     sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.ARCHER, Owner.AlliedBuilding.toInt()));
                 // Sinon de chevaliers
-                } else if (!archers.isEmpty()) {
+                } else if (knights.size() < 2) {
                     System.err.println("On construit un chevalier");
                     queen.buildBarrack(BarrackType.KNIGHT, sites);
+                    knights.add(new Knight());
                     sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.KNIGHT, Owner.AlliedBuilding.toInt()));
                 // Sinon on attend
                 } else {
@@ -97,7 +106,7 @@ class Player {
             }
 
             // On entraine des unités
-            queen.trainArmy(sites);
+            queen.trainArmy(sites, archers, knights);
 
             lapCounter++;
             System.err.println("-------- Fin du tour numéro : " + lapCounter + "--------");

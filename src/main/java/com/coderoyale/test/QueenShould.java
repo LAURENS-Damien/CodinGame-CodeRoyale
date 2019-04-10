@@ -23,7 +23,6 @@ public class QueenShould {
         sites.add(new Site(2, 10, 10, 50));
         sites.add(new Site(3, 584, 478, 50));
         sites.add(new Site(4, 1900, 896, 50));
-        sites.add(new Site(7, 1751, 713, 79));
 
         // Coordonnées d'origine de la reine
         queen.setxCoordinate(0);
@@ -31,9 +30,12 @@ public class QueenShould {
 
     @Test
     public void setNearestEmptySite() {
-        queen.setxCoordinate(0);
+        queen.setxCoordinate(154);
+        queen.setyCoordinate(253);
+        sites.add(new Site(5, 154, 389, 64));
+        sites.add(new Site(23, 223, 165, 75));
         queen.setNearestEmptySite(sites);
-        assertEquals(sites.get(1).getSiteId(), queen.getNearestEmptySite());
+        assertEquals(sites.get(4).getSiteId(), queen.getNearestEmptySite());
         queen.setxCoordinate(45);
         queen.setNearestEmptySite(sites);
         assertEquals(sites.get(0).getSiteId(), queen.getNearestEmptySite());
@@ -79,10 +81,10 @@ public class QueenShould {
         sites.get(0).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.ARCHER, Owner.AlliedBuilding.toInt()));
         sites.get(1).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.KNIGHT, Owner.AlliedBuilding.toInt()));
         queen.setGold(300);
-        assertEquals(queen.trainArmy(sites), Commands.TRAIN.toString() + " 1 2");
+        assertEquals(queen.trainArmy(sites, archers, knights), Commands.TRAIN.toString() + " 1 2");
         queen.setGold(70);
-        assertEquals(queen.trainArmy(sites), Commands.TRAIN.toString());
+        assertEquals(queen.trainArmy(sites, archers, knights), Commands.TRAIN.toString());
         queen.setGold(170);
-        assertEquals(queen.trainArmy(sites), Commands.TRAIN.toString() + " 1");
+        assertEquals(queen.trainArmy(sites, archers, knights), Commands.TRAIN.toString() + " 1");
     }
 }

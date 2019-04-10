@@ -1,7 +1,6 @@
 package com.coderoyale.classes;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Queen {
     final private int RADIUS = 30;
@@ -104,7 +103,7 @@ public class Queen {
     }
 
     public boolean isInContactWithSite() {
-        return this.touchedId > -1;
+        return this.touchedId > -1 && this.touchedId == this.nearestEmptySite;
     }
 
     public String buildBarrack(BarrackType barrackType, List<Site> sites) {
@@ -122,12 +121,16 @@ public class Queen {
         return waitCommand;
     }
 
-    public String trainArmy(List<Site> sites) {
+    public String trainArmy(List<Site> sites, List<Archer> archers, List<Knight> knights) {
         StringBuilder sitesId = new StringBuilder();
         for (int index=0; index < sites.size(); index++) {
             Site site = sites.get(index);
-            System.err.println("Le site numéro " + site.getSiteId() +  " possède une structure \nde type " + site.getBuilding().getStructureType());
-            if (site.getBuilding().getStructureType() != StructureType.NoBuildingConstructed.toInt() && canTrain(site)) {
+            //System.err.println("Le site numéro " + site.getSiteId() +  " possède une structure \nde type " + site.getBuilding().getStructureType());
+            if (site.getBuilding().getBarrackType() == BarrackType.ARCHER && canTrain(site)) {
+                System.err.println("Le site numéro " + site.getSiteId() +  " peut entrainer : " + canTrain(site));
+                sitesId.append(" ").append(site.getSiteId());
+                this.setGold(this.getGold()-site.getBuilding().getCost());
+            } else if (site.getBuilding().getBarrackType() == BarrackType.KNIGHT && canTrain(site) && archers.size() > 0) {
                 System.err.println("Le site numéro " + site.getSiteId() +  " peut entrainer : " + canTrain(site));
                 sitesId.append(" ").append(site.getSiteId());
                 this.setGold(this.getGold()-site.getBuilding().getCost());
