@@ -64,20 +64,31 @@ public class Queen {
     public void setNearestEmptySite(List<Site> sites) {
 
         int deltaXMax = GameCard.XCoordinate.toInt();
+        int deltaYMax = GameCard.YCoordinate.toInt();
+        int deltaQueenXY = this.xCoordinate+this.yCoordinate;
 
         for (Site site : sites) {
             if (site.isFree()) {
-                int deltaX;
-                // On détermine la coordonnée X la plus proche
+                int deltaX = site.getxCoordinate();
+                int deltaY = site.getyCoordinate();
+                // On détermine le site le plus proche
                 if (site.getxCoordinate() <= this.getxCoordinate()) {
                     deltaX = this.getxCoordinate() - site.getxCoordinate();
                 } else {
                     deltaX =  site.getxCoordinate() - this.getxCoordinate();
                 }
 
-                if (deltaX < deltaXMax) {
+                if (site.getyCoordinate() <= this.getyCoordinate()) {
+                    deltaY = this.getyCoordinate() - site.getyCoordinate();
+                } else {
+                    deltaY =  site.getyCoordinate() - this.getyCoordinate();
+                }
+
+                int deltaSiteXY = deltaX+deltaY;
+
+                if (deltaSiteXY < deltaXMax) {
                     this.nearestEmptySite = site.getSiteId();
-                    deltaXMax = deltaX;
+                    deltaXMax = deltaSiteXY;
                 }
             }
         }

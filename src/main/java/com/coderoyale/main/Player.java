@@ -31,7 +31,6 @@ class Player {
             int touchedSite = in.nextInt(); // -1 if none
             queen.setGold(gold);
             queen.setTouchedId(touchedSite);
-            queen.setNearestEmptySite(sites);
             for (int i = 0; i < numSites; i++) {
                 int siteId = in.nextInt();
                 int ignore1 = in.nextInt(); // used in future leagues
@@ -52,6 +51,7 @@ class Player {
                 if (activeUnity.isAlliedQueen()) {
                     queen.setxCoordinate(x);
                     queen.setyCoordinate(y);
+                    queen.setNearestEmptySite(sites);
                 }
 
                 if (activeUnity.isAlliedKnight()) {
