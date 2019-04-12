@@ -92,7 +92,7 @@ public class Queen {
             }
         }
 
-        System.err.println("Appel à la méthode setNearestEmptySite. Voici l'id du site \nle plus proche : " + this.nearestEmptySite);
+        System.err.println("Voici l'id du site le plus proche : " + this.nearestEmptySite);
     }
 
     public String moveToNearestEmptySite(List<Site> sites) {
@@ -107,8 +107,8 @@ public class Queen {
     }
 
     public String buildBarrack(BarrackType barrackType, List<Site> sites) {
-        String buildCommand = Commands.BUILD.toString() + " " + this.getNearestEmptySite() + " " + barrackType.toString();
-        sites.get(this.getNearestEmptySite()).setBuilding(new Building(StructureType.Barrack.toInt(), barrackType, Owner.AlliedBuilding.toInt()));
+        String buildCommand = Commands.BUILD.toString() + " " + this.getTouchedId() + " " + barrackType.toString();
+        sites.get(this.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), barrackType, Owner.AlliedBuilding.toInt()));
         System.out.println(buildCommand);
 
         return  buildCommand;

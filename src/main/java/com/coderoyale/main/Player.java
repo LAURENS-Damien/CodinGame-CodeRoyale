@@ -11,7 +11,6 @@ class Player {
         int numSites = in.nextInt();
 
         // Initilisation
-        int lapCounter = 0;
         List<Site> sites = new ArrayList<>();
         List<Archer> archers = new ArrayList<>();
         List<Knight> knights = new ArrayList<>();
@@ -107,9 +106,6 @@ class Player {
 
             // On entraine des unités
             queen.trainArmy(sites, archers, knights);
-
-            lapCounter++;
-            System.err.println("-------- Fin du tour numéro : " + lapCounter + "--------");
         }
     }
 }
