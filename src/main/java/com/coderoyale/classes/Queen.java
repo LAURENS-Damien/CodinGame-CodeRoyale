@@ -1,24 +1,14 @@
 package com.coderoyale.classes;
 
-import java.util.List;
-
 public class Queen {
-    final private int RADIUS = 30;
-    final private int MAX_MOUVEMENT = 60;
+    final static private int RADIUS = 30;
+    final static private int MAX_MOUVEMENT = 60;
+    final static private int PV = 100;
     private int gold;
     private int touchedId;
-    private int pv = 100;
     private int xCoordinate;
     private int yCoordinate;
     private int nearestEmptySite;
-
-    public int getRADIUS() {
-        return RADIUS;
-    }
-
-    public int getMAX_MOUVEMENT() {
-        return MAX_MOUVEMENT;
-    }
 
     public int getTouchedId() {
         return touchedId;
@@ -26,10 +16,6 @@ public class Queen {
 
     public void setTouchedId(int touchedId) {
         this.touchedId = touchedId;
-    }
-
-    public int getPv() {
-        return pv;
     }
 
     public int getGold() {
@@ -60,16 +46,16 @@ public class Queen {
         return this.nearestEmptySite;
     }
 
-    public void setNearestEmptySite(List<Site> sites) {
+    public void setNearestEmptySite() {
 
         int deltaXMax = GameCard.XCoordinate.toInt();
         int deltaYMax = GameCard.YCoordinate.toInt();
         int deltaQueenXY = this.xCoordinate+this.yCoordinate;
 
-        for (Site site : sites) {
+        for (Site site : SiteUtil.getSites()) {
             if (site.isFree()) {
-                int deltaX = site.getxCoordinate();
-                int deltaY = site.getyCoordinate();
+                int deltaX;
+                int deltaY;
                 // On détermine le site le plus proche
                 if (site.getxCoordinate() <= this.getxCoordinate()) {
                     deltaX = this.getxCoordinate() - site.getxCoordinate();
@@ -92,11 +78,11 @@ public class Queen {
             }
         }
 
-        System.err.println("Voici l'id du site le plus proche : " + this.nearestEmptySite);
+        System.err.println("Id du site le plus proche : " + this.nearestEmptySite);
     }
 
-    public String moveToNearestEmptySite(List<Site> sites) {
-        String moveCommand = Commands.MOVE.toString() + " " + sites.get(this.nearestEmptySite).getxCoordinate() + " " + sites.get(this.nearestEmptySite).getyCoordinate();
+    public String moveToNearestEmptySite() {
+        String moveCommand = Commands.MOVE.toString() + " " + SiteUtil.getSites().get(this.nearestEmptySite).getxCoordinate() + " " + SiteUtil.getSites().get(this.nearestEmptySite).getyCoordinate();
         System.out.println(moveCommand);
 
         return moveCommand;
@@ -106,10 +92,15 @@ public class Queen {
         return this.touchedId > -1 && this.touchedId == this.nearestEmptySite;
     }
 
-    public String buildBarrack(BarrackType barrackType, List<Site> sites) {
-        String buildCommand = Commands.BUILD.toString() + " " + this.getTouchedId() + " " + barrackType.toString();
-        sites.get(this.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), barrackType, Owner.AlliedBuilding.toInt()));
-        System.out.println(buildCommand);
+    public String buildBarrack(BarrackType barrackType) {
+        String buildCommand = "";
+        try {
+            SiteUtil.getSite(this.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), barrackType, Owner.AlliedBuilding.toInt()));
+            buildCommand = new StringBuilder().append(Commands.BUILD.toString()).append(" ").append(this.getTouchedId()).append(" ").append(barrackType.toString()).toString();
+            System.out.println(buildCommand);
+        } catch (NoSiteFoundException e) {
+            System.err.println(e.getMessage());
+        }
 
         return  buildCommand;
     }
@@ -121,23 +112,24 @@ public class Queen {
         return waitCommand;
     }
 
-    public String trainArmy(List<Site> sites, List<Archer> archers, List<Knight> knights) {
+    public String trainArmy() {
         StringBuilder sitesId = new StringBuilder();
-        for (int index=0; index < sites.size(); index++) {
-            Site site = sites.get(index);
+        for (int index=0; index < SiteUtil.getSites().size(); index++) {
+            Site site = SiteUtil.getSites().get(index);
             //System.err.println("Le site numéro " + site.getSiteId() +  " possède une structure \nde type " + site.getBuilding().getStructureType());
             if (site.getBuilding().getBarrackType() == BarrackType.ARCHER && canTrain(site)) {
-                System.err.println("Le site numéro " + site.getSiteId() +  " peut entrainer : " + canTrain(site));
+                //System.err.println("Le site numéro " + site.getSiteId() +  " peut entrainer : " + canTrain(site));
+                this.setGold(this.getGold()-ArcherSection.ARCHERS_SECTION_COST);
+                AlliedDashboard.archersSections.add(new ArcherSection());
                 sitesId.append(" ").append(site.getSiteId());
-                this.setGold(this.getGold()-site.getBuilding().getCost());
-            } else if (site.getBuilding().getBarrackType() == BarrackType.KNIGHT && canTrain(site) && archers.size() > 0) {
-                System.err.println("Le site numéro " + site.getSiteId() +  " peut entrainer : " + canTrain(site));
+            } else if (site.getBuilding().getBarrackType() == BarrackType.KNIGHT && canTrain(site) && AlliedDashboard.archersSections.size() > 0) {
+                //System.err.println("Le site numéro " + site.getSiteId() +  " peut entrainer : " + canTrain(site));
+                this.setGold(this.getGold()-KnightSection.KNIGHTS_SECTION_COST);
+                AlliedDashboard.knightsSections.add(new KnightSection());
                 sitesId.append(" ").append(site.getSiteId());
-                this.setGold(this.getGold()-site.getBuilding().getCost());
             }
         }
         String trainCommand = Commands.TRAIN.toString() + sitesId;
-        //String trainCommand = Commands.TRAIN.toString() + " " + this.getNearestEmptySite();
         System.out.println(trainCommand);
 
         return trainCommand;
@@ -146,9 +138,9 @@ public class Queen {
 
     public boolean canTrain(Site site) {
         if (site.getBuilding().getBarrackType().name().equals(BarrackType.KNIGHT.name())) {
-            return this.gold >= Knight.COST;
+            return this.gold >= KnightSection.KNIGHTS_SECTION_COST;
         } else if (site.getBuilding().getBarrackType().name().equals(BarrackType.ARCHER.name())) {
-            return this.gold >= Archer.COST;
+            return this.gold >= ArcherSection.ARCHERS_SECTION_COST;
         } else {
             return false;
         }

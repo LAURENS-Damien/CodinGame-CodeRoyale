@@ -22,14 +22,4 @@ public class Building {
     public BarrackType getBarrackType() {
         return barrackType;
     }
-
-    public int getCost() {
-        if(barrackType.toString().equals(Archer.BARRACK_TYPE.toString())) {
-            return Archer.COST;
-        } else if(barrackType.toString().equals(Knight.BARRACK_TYPE.toString())) {
-            return Knight.COST;
-        } else {
-            return 0;
-        }
-    }
 }

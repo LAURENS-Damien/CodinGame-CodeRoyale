@@ -12,8 +12,6 @@ class Player {
 
         // Initilisation
         List<Site> sites = new ArrayList<>();
-        List<Archer> archers = new ArrayList<>();
-        List<Knight> knights = new ArrayList<>();
         for (int i = 0; i < numSites; i++) {
             int siteId = in.nextInt();
             int x = in.nextInt();
@@ -22,6 +20,7 @@ class Player {
             Site site = new Site(siteId, x, y, radius);
             sites.add(site);
         }
+        SiteUtil.setSites(sites);
 
         Queen queen = new Queen();
         // game loop
@@ -50,7 +49,7 @@ class Player {
                 if (activeUnity.isAlliedQueen()) {
                     queen.setxCoordinate(x);
                     queen.setyCoordinate(y);
-                    queen.setNearestEmptySite(sites);
+                    queen.setNearestEmptySite();
                 }
 
                 if (activeUnity.isAlliedKnight()) {
@@ -67,45 +66,45 @@ class Player {
 //                            System.err.println("Santé des archés : " + activeUnity.getHealth());
 //                        }
 //                    }
-                    if (activeUnity.getHealth() == 1) {
-                        archers.clear();
-                    }
+//                    if (activeUnity.getHealth() == 1) {
+//                        archers.clear();
+//                    }
                 }
             }
 
             // Si on est arrivé sur un site à construire
-            if (queen.isInContactWithSite() && sites.get(queen.getTouchedId()).isFree()) {
+            try {
+                if (queen.isInContactWithSite() && SiteUtil.getSite(queen.getTouchedId()).isFree()) {
 //                System.err.println("On est arrivé sur un\nsite à construire : " + queen.getTouchedId());
 //                System.err.println("Nombre de chevaliers : " + knights.size());
 //                System.err.println("Nombre d'archers : " + archers.size());
-                // On construit une caserne
-                // D'archés en priorité
-                if (archers.size() <1) {
-                    System.err.println("On construit un arché");
-                    queen.buildBarrack(BarrackType.ARCHER, sites);
-                    archers.add(new Archer());
-                    archers.add(new Archer());
-                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.ARCHER, Owner.AlliedBuilding.toInt()));
-                // Sinon de chevaliers
-                } else if (knights.size() < 2) {
-                    System.err.println("On construit un chevalier");
-                    queen.buildBarrack(BarrackType.KNIGHT, sites);
-                    knights.add(new Knight());
-                    sites.get(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.KNIGHT, Owner.AlliedBuilding.toInt()));
-                // Sinon on attend
+                    // On construit une caserne d'archés en priorité
+                    if (AlliedDashboard.archersSections.size() <1) {
+                        System.err.println("On construit une caserne d'archés");
+                        queen.buildBarrack(BarrackType.ARCHER);
+                        SiteUtil.getSite(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.ARCHER, Owner.AlliedBuilding.toInt()));
+                        // Sinon de chevaliers
+                    } else if (AlliedDashboard.knightsSections.size() < 2) {
+                        System.err.println("On construit une caserne de chevaliers");
+                        queen.buildBarrack(BarrackType.KNIGHT);
+                        SiteUtil.getSite(queen.getTouchedId()).setBuilding(new Building(StructureType.Barrack.toInt(), BarrackType.KNIGHT, Owner.AlliedBuilding.toInt()));
+                        // Sinon on attend
+                    } else {
+                        System.err.println("On attend");
+                        queen.waitAMoment();
+                    }
+                    // sinon on bouge tant que l'on a pas atteint un site
                 } else {
-                    System.err.println("On attend");
-                    queen.waitAMoment();
+                    System.err.println("On bouge vers le site\nnuméro : " + queen.getNearestEmptySite());
+                    queen.setNearestEmptySite();
+                    queen.moveToNearestEmptySite();
                 }
-            // sinon on bouge tant que l'on a pas atteint un site
-            } else {
-                System.err.println("On bouge vers le site\nnuméro : " + queen.getNearestEmptySite());
-                queen.setNearestEmptySite(sites);
-                queen.moveToNearestEmptySite(sites);
+            } catch (NoSiteFoundException e) {
+                System.err.println(e.getMessage());
             }
 
             // On entraine des unités
-            queen.trainArmy(sites, archers, knights);
+            queen.trainArmy();
         }
     }
 }

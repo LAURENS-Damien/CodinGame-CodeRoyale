@@ -1,23 +1,10 @@
 package com.coderoyale.classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractDashboard {
-    private int knightnumber = 0;
-    private int archerNumber = 0;
-    private int sitesNumber = 0;
+    public static List knightsSections = new ArrayList();
+    public static List archersSections = new ArrayList();
 
-    public int getKnightnumber() {
-        return knightnumber;
-    }
-
-    public void setKnightnumber(int knightnumber) {
-        this.knightnumber = knightnumber;
-    }
-
-    public int getArcherNumber() {
-        return archerNumber;
-    }
-
-    public void setArcherNumber(int archerNumber) {
-        this.archerNumber = archerNumber;
-    }
 }
